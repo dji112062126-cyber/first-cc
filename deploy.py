@@ -13,6 +13,11 @@ Usage:
 
 from __future__ import annotations
 
+import sys
+# Fix Unicode on Windows GBK console
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[attr-defined]
+
 import argparse
 import asyncio
 import json
@@ -92,9 +97,9 @@ async def start_serveo_tunnel(port: int = 8000) -> str:
             text = line.decode("utf-8", errors="replace").strip()
             if text:
                 print(f"  [serveo] {text}")
-            # Extract URL pattern: xxx.lhr.life or xxx.serveo.net
+            # Extract URL pattern: serveo uses multiple domains
             import re
-            m = re.search(r"(https?://[\w-]+\.(?:lhr\.life|serveo\.net))", text)
+            m = re.search(r"(https?://[\w-]+\.(?:lhr\.life|serveo\.net|serveousercontent\.com))", text)
             if m:
                 url = m.group(1)
                 print(f"\n[tunnel] PUBLIC URL: {url}")
@@ -265,7 +270,7 @@ async def main() -> int:
     print(f"\n[health] Checking {public_url} ...")
     ok = await health_check(public_url)
     if ok:
-        print(f"[health] ✓ Server is reachable and healthy!")
+        print(f"[health] [OK] Server is reachable and healthy!")
     else:
         print(f"[health] ✗ Server not reachable. Start it: python server.py")
         return 1
