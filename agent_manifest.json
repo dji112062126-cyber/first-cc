@@ -1,0 +1,106 @@
+{
+  "manifest_version": "1.0",
+  "agent": {
+    "name": "Web Scraper with x402 Micropayments",
+    "slug": "web-scraper-x402",
+    "version": "1.0.0",
+    "description": "AI-powered web scraping service behind a cryptocurrency paywall. Scrapes and cleans any webpage — removes scripts, styles, ads, navigation, and other junk. Returns clean plain text with statistics including garbage removal percentage and estimated token savings.",
+    "author": {
+      "name": "dji112062126",
+      "url": "https://github.com/dji112062126-cyber/first-cc"
+    },
+    "category": "developer-tools",
+    "tags": [
+      "web-scraping",
+      "html-cleaning",
+      "data-extraction",
+      "content-processing",
+      "x402",
+      "crypto-payments"
+    ],
+    "icon_url": "",
+    "repository": "https://github.com/dji112062126-cyber/first-cc"
+  },
+
+  "protocol": {
+    "type": "mcp",
+    "transport": "sse",
+    "endpoint": "<YOUR_PUBLIC_TUNNEL_URL>/mcp/sse",
+    "endpoint_note": "Replace <YOUR_PUBLIC_TUNNEL_URL> with your ngrok/cpolar HTTPS URL. Example: https://abc123.ngrok-free.app/mcp/sse"
+  },
+
+  "pricing": {
+    "model": "per-call",
+    "currency": "USDC",
+    "price_per_call": 0.001,
+    "price_denomination": "USD",
+    "free_tools": [
+      "get_service_info"
+    ],
+    "paid_tools": [
+      "scrape_webpage"
+    ],
+    "payment_protocol": "x402",
+    "payment_header": "X-402-Payment",
+    "payment_header_description": "Include the Base chain USDC transfer transaction hash as the value of this HTTP header."
+  },
+
+  "blockchain": {
+    "network": "base",
+    "chain_id": 8453,
+    "token_symbol": "USDC",
+    "token_contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "recipient_address": "0xcf15b97a41022427f50d4bb284c108eb0a716c2b",
+    "amount_per_call": "1000",
+    "amount_unit": "micro-USDC",
+    "amount_note": "1000 micro-USDC = 0.001 USDC"
+  },
+
+  "tools": [
+    {
+      "name": "get_service_info",
+      "description": "Get service pricing, payment instructions, and supported features. FREE — no payment required.",
+      "cost": "free",
+      "parameters": {}
+    },
+    {
+      "name": "scrape_webpage",
+      "description": "Scrape and clean a webpage. Removes scripts, styles, navigation, ads, and other junk. Returns clean text with statistics (garbage removal %, token savings, site type). Requires x402 payment via X-402-Payment header.",
+      "cost": "0.001 USDC",
+      "parameters": {
+        "url": {
+          "type": "string",
+          "description": "The full URL of the webpage to scrape (e.g. https://example.com)",
+          "required": true
+        }
+      },
+      "output_schema": {
+        "raw_url": "string — original URL",
+        "site_type": "string — article | product | social | other",
+        "clean_core_text": "string — cleaned plain text content",
+        "garbage_removed_percent": "number — percentage of junk characters removed",
+        "estimated_token_saved": "integer — estimated LLM tokens saved by cleaning"
+      }
+    }
+  ],
+
+  "verification": {
+    "method": "on-chain-event-log",
+    "description": "Server verifies USDC Transfer events on Base mainnet. The transaction receipt is fetched via eth_getTransactionReceipt and logs are scanned for a Transfer to the recipient address with amount >= required.",
+    "rpc_fallback": "Public Base RPC endpoints are tried in order. Set BASE_RPC_URL environment variable for a dedicated endpoint."
+  },
+
+  "requirements": {
+    "python": ">=3.12",
+    "dependencies": [
+      "fastapi",
+      "uvicorn",
+      "mcp",
+      "x402",
+      "httpx",
+      "beautifulsoup4"
+    ],
+    "platforms": ["windows", "macos", "linux"],
+    "ports": [8000]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "web-scraper-x402": {
+      "url": "http://localhost:8000/mcp/sse",
+      "transport": "sse",
+      "description": "Web scraper with x402 micropayments (0.1 USDC/call on Base)",
+      "payment": {
+        "protocol": "x402",
+        "network": "base",
+        "chain_id": 8453,
+        "token": "USDC",
+        "token_address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "amount_micro_usdc": "100000",
+        "amount_display": "0.1 USDC",
+        "recipient": "0xcf15b97a41022427f50d4bb284c108eb0a716c2b",
+        "header": "X-402-Payment"
+      },
+      "env": {
+        "BASE_RPC_URL": {
+          "description": "Optional — custom Base RPC endpoint",
+          "default": "https://mainnet.base.org"
+        }
+      }
+    }
+  }
+}
