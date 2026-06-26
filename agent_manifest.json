@@ -25,7 +25,7 @@
     "type": "mcp",
     "transport": "sse",
     "endpoint": "https://55d7a954bbefed.lhr.life/mcp/sse",
-    "endpoint_note": "Auto-detected tunnel URL: https://55d7a954bbefed.lhr.life/mcp/sse"
+    "endpoint_note": "Live tunnel URL: https://console.serveo.net/mcp/sse"
   },
   "pricing": {
     "model": "per-call",
